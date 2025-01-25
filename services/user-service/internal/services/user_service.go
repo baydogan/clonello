@@ -4,7 +4,9 @@ import (
 	"errors"
 	"github.com/baydogan/clonello/user-service/internal/models"
 	"github.com/baydogan/clonello/user-service/internal/utils"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
+	"time"
 )
 
 var ErrUserAlreadyExists = errors.New("user with the same username already exists")
@@ -29,7 +31,10 @@ func (s *UserService) RegisterUser(user *models.User, password string) error {
 		return err
 	}
 
+	user.UserID = uuid.New()
 	user.HashedPassword = hashedPassword
+	user.CreatedAt = time.Now()
+	user.PasswordChangedAt = time.Now()
 
 	return s.DB.Create(user).Error
 }
