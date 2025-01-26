@@ -35,9 +35,43 @@ services:
     networks:
       - clonello-network
 
+  mongo:
+    image: mongo:5.0
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: board_service_db
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - clonello-network
+
+  board-service:
+    build:
+      context: ./services/board-service
+      dockerfile: Dockerfile
+    container_name: board-service
+    environment:
+      DB_HOST: mongo
+      DB_PORT: 27017
+      DB_NAME: board_service_db
+      MONGO_USER: root
+      MONGO_PASSWORD: secret
+      SERVICE_PORT: 8081
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongo
+    networks:
+      - clonello-network
+
 networks:
   clonello-network:
     driver: bridge
 
 volumes:
   postgres_data:
+  mongo_data:
