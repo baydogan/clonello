@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/baydogan/clonello/board-service/internal/database"
+	"github.com/baydogan/clonello/board-service/internal/grpc"
 	"github.com/baydogan/clonello/board-service/internal/handlers"
 	"github.com/baydogan/clonello/board-service/internal/services"
 	"github.com/gin-gonic/gin"
@@ -21,7 +22,8 @@ func main() {
 	}
 
 	boardService := services.NewBoardService(db)
-	boardHandler := handlers.NewBoardHandler(boardService)
+	grpcClients := grpc.NewGRPCClients("list-service:50052", "card-service:50053")
+	boardHandler := handlers.NewBoardHandler(boardService, grpcClients)
 
 	router := gin.Default()
 	router.POST("/boards", boardHandler.CreateBoard)

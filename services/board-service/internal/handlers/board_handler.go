@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"github.com/baydogan/clonello/board-service/internal/grpc"
 	"github.com/baydogan/clonello/board-service/internal/models"
 	"github.com/baydogan/clonello/board-service/internal/services"
 	"github.com/gin-gonic/gin"
@@ -11,11 +12,15 @@ import (
 )
 
 type BoardHandler struct {
-	Service *services.BoardService
+	Service     *services.BoardService
+	GRPCClients *grpc.GRPCClients
 }
 
-func NewBoardHandler(service *services.BoardService) *BoardHandler {
-	return &BoardHandler{Service: service}
+func NewBoardHandler(service *services.BoardService, grpcClients *grpc.GRPCClients) *BoardHandler {
+	return &BoardHandler{
+		Service:     service,
+		GRPCClients: grpcClients,
+	}
 }
 
 func (h *BoardHandler) CreateBoard(c *gin.Context) {
