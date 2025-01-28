@@ -2,11 +2,14 @@ module github.com/baydogan/clonello/board-service
 
 go 1.23.3
 
-
 require (
+	github.com/baydogan/clonello v0.0.0-20250128065906-6792bd5f8379
 	github.com/gin-gonic/gin v1.10.0
 	go.mongodb.org/mongo-driver v1.17.2
 	google.golang.org/grpc v1.70.0
+)
+
+require (
 	github.com/bytedance/sonic v1.11.6 // indirect
 	github.com/bytedance/sonic/loader v0.1.1 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect
@@ -43,4 +46,3 @@ require (
 	google.golang.org/protobuf v1.36.4 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
