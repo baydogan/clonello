@@ -21,6 +21,6 @@ RUN protoc \
 
 RUN go build -o board-service cmd/main.go
 
-EXPOSE 8081
+EXPOSE 8081 50051
 
 CMD ["./board-service"]

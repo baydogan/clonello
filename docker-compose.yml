@@ -63,6 +63,7 @@ services:
       SERVICE_PORT: 8081
     ports:
       - "8081:8081"
+      - "50051:50051"
     depends_on:
       - mongo
     networks:

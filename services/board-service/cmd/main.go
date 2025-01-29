@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/baydogan/clonello/board-service/internal/database"
+	grpcserver "github.com/baydogan/clonello/board-service/internal/grpc"
 	"github.com/baydogan/clonello/board-service/internal/handlers"
 	"github.com/baydogan/clonello/board-service/internal/services"
 	"github.com/gin-gonic/gin"
@@ -21,12 +22,14 @@ func main() {
 	}
 
 	boardService := services.NewBoardService(db)
-	//grpcClients := grpc.NewGRPCClients("list-service:50052", "card-service:50053")
 	boardHandler := handlers.NewBoardHandler(boardService)
 
 	router := gin.Default()
 	router.POST("/boards", boardHandler.CreateBoard)
 	router.GET("/boards", boardHandler.GetAllBoards)
+	router.GET("/boards/:board_id", boardHandler.GetBoard)
+
+	go grpcserver.StartGRPCServer(boardService)
 
 	log.Println("Board Service running on port :8081")
 	if err := router.Run(":8081"); err != nil {

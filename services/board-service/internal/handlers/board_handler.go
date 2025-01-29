@@ -56,3 +56,19 @@ func (h *BoardHandler) GetAllBoards(c *gin.Context) {
 
 	c.JSON(http.StatusOK, boards)
 }
+
+func (h *BoardHandler) GetBoard(c *gin.Context) {
+	boardID := c.Param("board_id")
+
+	board, err := h.Service.GetBoard(context.Background(), boardID)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Board not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"board_id": board.ID,
+		"title":    board.Title,
+		"owner_id": board.OwnerID,
+	})
+}

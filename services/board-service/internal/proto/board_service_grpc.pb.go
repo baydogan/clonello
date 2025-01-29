@@ -19,14 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	BoardService_CreateBoard_FullMethodName = "/pb.BoardService/CreateBoard"
+	BoardService_GetBoard_FullMethodName = "/pb.BoardService/GetBoard"
 )
 
 // BoardServiceClient is the client API for BoardService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BoardServiceClient interface {
-	CreateBoard(ctx context.Context, in *CreateBoardRequest, opts ...grpc.CallOption) (*CreateBoardResponse, error)
+	GetBoard(ctx context.Context, in *GetBoardRequest, opts ...grpc.CallOption) (*GetBoardResponse, error)
 }
 
 type boardServiceClient struct {
@@ -37,10 +37,10 @@ func NewBoardServiceClient(cc grpc.ClientConnInterface) BoardServiceClient {
 	return &boardServiceClient{cc}
 }
 
-func (c *boardServiceClient) CreateBoard(ctx context.Context, in *CreateBoardRequest, opts ...grpc.CallOption) (*CreateBoardResponse, error) {
+func (c *boardServiceClient) GetBoard(ctx context.Context, in *GetBoardRequest, opts ...grpc.CallOption) (*GetBoardResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreateBoardResponse)
-	err := c.cc.Invoke(ctx, BoardService_CreateBoard_FullMethodName, in, out, cOpts...)
+	out := new(GetBoardResponse)
+	err := c.cc.Invoke(ctx, BoardService_GetBoard_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (c *boardServiceClient) CreateBoard(ctx context.Context, in *CreateBoardReq
 // All implementations must embed UnimplementedBoardServiceServer
 // for forward compatibility.
 type BoardServiceServer interface {
-	CreateBoard(context.Context, *CreateBoardRequest) (*CreateBoardResponse, error)
+	GetBoard(context.Context, *GetBoardRequest) (*GetBoardResponse, error)
 	mustEmbedUnimplementedBoardServiceServer()
 }
 
@@ -62,8 +62,8 @@ type BoardServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedBoardServiceServer struct{}
 
-func (UnimplementedBoardServiceServer) CreateBoard(context.Context, *CreateBoardRequest) (*CreateBoardResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateBoard not implemented")
+func (UnimplementedBoardServiceServer) GetBoard(context.Context, *GetBoardRequest) (*GetBoardResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBoard not implemented")
 }
 func (UnimplementedBoardServiceServer) mustEmbedUnimplementedBoardServiceServer() {}
 func (UnimplementedBoardServiceServer) testEmbeddedByValue()                      {}
@@ -86,20 +86,20 @@ func RegisterBoardServiceServer(s grpc.ServiceRegistrar, srv BoardServiceServer)
 	s.RegisterService(&BoardService_ServiceDesc, srv)
 }
 
-func _BoardService_CreateBoard_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateBoardRequest)
+func _BoardService_GetBoard_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBoardRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BoardServiceServer).CreateBoard(ctx, in)
+		return srv.(BoardServiceServer).GetBoard(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: BoardService_CreateBoard_FullMethodName,
+		FullMethod: BoardService_GetBoard_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BoardServiceServer).CreateBoard(ctx, req.(*CreateBoardRequest))
+		return srv.(BoardServiceServer).GetBoard(ctx, req.(*GetBoardRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -112,8 +112,8 @@ var BoardService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*BoardServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateBoard",
-			Handler:    _BoardService_CreateBoard_Handler,
+			MethodName: "GetBoard",
+			Handler:    _BoardService_GetBoard_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

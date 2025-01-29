@@ -2,8 +2,10 @@ package services
 
 import (
 	"context"
+	"errors"
 	"github.com/baydogan/clonello/board-service/internal/models"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"time"
 )
@@ -40,4 +42,21 @@ func (s *BoardService) GetAllBoards(ctx context.Context) ([]models.Board, error)
 	}
 
 	return boards, nil
+}
+
+func (s *BoardService) GetBoard(ctx context.Context, boardID string) (*models.Board, error) {
+	objID, err := primitive.ObjectIDFromHex(boardID)
+	if err != nil {
+		return nil, errors.New("invalid board ID format")
+	}
+
+	var board models.Board
+	err = s.DB.FindOne(ctx, bson.M{"_id": objID}).Decode(&board)
+	if err == mongo.ErrNoDocuments {
+		return nil, errors.New("board not found")
+	} else if err != nil {
+		return nil, err
+	}
+
+	return &board, nil
 }
