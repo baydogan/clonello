@@ -11,7 +11,7 @@ import (
 
 func main() {
 
-	uri := "mongodb://mongo:27017"
+	uri := "mongodb://mongo-board:27017"
 	username := "root"
 	password := "secret"
 	dbName := "board_service_db"

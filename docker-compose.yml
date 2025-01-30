@@ -35,17 +35,17 @@ services:
     networks:
       - clonello-network
 
-  mongo:
+  mongo-board:
     image: mongo:5.0
-    container_name: mongo
+    container_name: mongo-board
     ports:
-      - "27017:27017"
+      - "27018:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: secret
       MONGO_INITDB_DATABASE: board_service_db
     volumes:
-      - mongo_data:/data/db
+      - mongo_board_data:/data/db
     networks:
       - clonello-network
 
@@ -55,7 +55,7 @@ services:
       dockerfile: Dockerfile
     container_name: board-service
     environment:
-      DB_HOST: mongo
+      DB_HOST: mongo-board
       DB_PORT: 27017
       DB_NAME: board_service_db
       MONGO_USER: root
@@ -65,7 +65,41 @@ services:
       - "8081:8081"
       - "50051:50051"
     depends_on:
-      - mongo
+      - mongo-board
+    networks:
+      - clonello-network
+
+  mongo-list:
+    image: mongo:5.0
+    container_name: mongo-list
+    ports:
+      - "27019:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: list_service_db
+    volumes:
+      - mongo_list_data:/data/db
+    networks:
+      - clonello-network
+
+  list-service:
+    build:
+      context: ./services/list-service
+      dockerfile: Dockerfile
+    container_name: list-service
+    environment:
+      DB_HOST: mongo-list
+      DB_PORT: 27017
+      DB_NAME: list_service_db
+      MONGO_USER: root
+      MONGO_PASSWORD: secret
+      GRPC_BOARD_SERVICE: board-service:50051
+    ports:
+      - "50052:50052"
+    depends_on:
+      - mongo-list
+      - board-service
     networks:
       - clonello-network
 
@@ -75,4 +109,5 @@ networks:
 
 volumes:
   postgres_data:
-  mongo_data:
+  mongo_board_data:
+  mongo_list_data:
