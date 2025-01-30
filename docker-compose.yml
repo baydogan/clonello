@@ -103,6 +103,24 @@ services:
     networks:
       - clonello-network
 
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    environment:
+      USER_SERVICE_URL: user-service:8080
+      BOARD_SERVICE_URL: board-service:50051
+      LIST_SERVICE_URL: list-service:50052
+    ports:
+      - "8082:8082"
+    depends_on:
+      - user-service
+      - board-service
+      - list-service
+    networks:
+      - clonello-network
+
 networks:
   clonello-network:
     driver: bridge
