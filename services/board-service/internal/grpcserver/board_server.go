@@ -2,10 +2,10 @@ package grpcserver
 
 import (
 	"context"
+	"github.com/baydogan/clonello/board-service/internal/proto/pb"
 	"log"
 
 	"github.com/baydogan/clonello/board-service/internal/database"
-	"github.com/baydogan/clonello/board-service/internal/grpcserver/proto"
 	"github.com/baydogan/clonello/board-service/internal/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -20,13 +20,13 @@ func (s *BoardServer) CreateBoard(ctx context.Context, req *pb.CreateBoardReques
 
 	board := models.Board{
 		ID:      primitive.NewObjectID(),
-		Title:   req.Name,
-		OwnerID: req.UserId,
+		Title:   req.Title,
+		OwnerID: req.OwnerId,
 	}
 
 	_, err := collection.InsertOne(ctx, board)
 	if err != nil {
-		log.Printf("Board eklenirken hata: %v", err)
+		log.Printf("Error during create board %v", err)
 		return nil, err
 	}
 
@@ -36,7 +36,7 @@ func (s *BoardServer) CreateBoard(ctx context.Context, req *pb.CreateBoardReques
 func (s *BoardServer) GetBoards(ctx context.Context, req *pb.GetBoardsRequest) (*pb.GetBoardsResponse, error) {
 	collection := database.GetCollection("boards")
 
-	cursor, err := collection.Find(ctx, bson.M{"owner_id": req.UserId})
+	cursor, err := collection.Find(ctx, bson.M{"owner_id": req.OwnerId})
 	if err != nil {
 		log.Printf("Board'lar getirilirken hata: %v", err)
 		return nil, err
@@ -51,7 +51,7 @@ func (s *BoardServer) GetBoards(ctx context.Context, req *pb.GetBoardsRequest) (
 		}
 		boards = append(boards, &pb.Board{
 			Id:      board.ID.Hex(),
-			Name:    board.Title,
+			Title:   board.Title,
 			OwnerId: board.OwnerID,
 		})
 	}

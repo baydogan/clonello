@@ -2,7 +2,7 @@ package grpc
 
 import (
 	"context"
-	"github.com/baydogan/clonello/api-gateway/internal/proto/pb"
+	pb "github.com/baydogan/clonello/api-gateway/internal/proto/pb"
 	"google.golang.org/grpc"
 	"log"
 )

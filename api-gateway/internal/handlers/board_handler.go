@@ -27,9 +27,9 @@ func CreateBoard(c *gin.Context) {
 }
 
 func GetBoards(c *gin.Context) {
-	userID := c.Query("user_id")
+	userID := c.Query("owner_id")
 	if userID == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "user_id is required"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "owner_id is required"})
 		return
 	}
 

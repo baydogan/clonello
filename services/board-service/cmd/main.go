@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/baydogan/clonello/board-service/internal/database"
 	"github.com/baydogan/clonello/board-service/internal/grpcserver"
-	pb "github.com/baydogan/clonello/board-service/internal/grpcserver/proto"
+	"github.com/baydogan/clonello/board-service/internal/proto/pb"
 	"google.golang.org/grpc"
 	"log"
 	"net"

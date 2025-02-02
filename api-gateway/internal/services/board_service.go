@@ -3,7 +3,7 @@ package services
 import (
 	"github.com/baydogan/clonello/api-gateway/internal/grpc"
 	"github.com/baydogan/clonello/api-gateway/internal/models"
-	"github.com/baydogan/clonello/api-gateway/internal/proto/pb"
+	pb "github.com/baydogan/clonello/api-gateway/internal/proto/pb"
 	"log"
 )
 
@@ -19,8 +19,8 @@ func NewBoardService() *BoardService {
 
 func (s *BoardService) CreateBoard(req models.CreateBoardRequest) (*models.CreateBoardResponse, error) {
 	grpcReq := &pb.CreateBoardRequest{
-		UserId: req.UserID,
-		Name:   req.Name,
+		OwnerId: req.UserID,
+		Title:   req.Name,
 	}
 
 	resp, err := s.boardClient.CreateBoard(grpcReq)
@@ -33,7 +33,7 @@ func (s *BoardService) CreateBoard(req models.CreateBoardRequest) (*models.Creat
 }
 
 func (s *BoardService) GetBoards(userID string) (*models.GetBoardsResponse, error) {
-	resp, err := s.boardClient.GetBoards(&pb.GetBoardsRequest{UserId: userID})
+	resp, err := s.boardClient.GetBoards(&pb.GetBoardsRequest{OwnerId: userID})
 	if err != nil {
 		log.Printf("Error calling GetBoards: %v", err)
 		return nil, err
@@ -43,7 +43,7 @@ func (s *BoardService) GetBoards(userID string) (*models.GetBoardsResponse, erro
 	for _, b := range resp.Boards {
 		boards = append(boards, models.Board{
 			ID:      b.Id,
-			Name:    b.Name,
+			Name:    b.Title,
 			OwnerID: b.OwnerId,
 		})
 	}
