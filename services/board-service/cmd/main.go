@@ -2,37 +2,27 @@ package main
 
 import (
 	"github.com/baydogan/clonello/board-service/internal/database"
-	grpcserver "github.com/baydogan/clonello/board-service/internal/grpc"
-	"github.com/baydogan/clonello/board-service/internal/handlers"
-	"github.com/baydogan/clonello/board-service/internal/services"
-	"github.com/gin-gonic/gin"
+	"github.com/baydogan/clonello/board-service/internal/grpcserver"
+	pb "github.com/baydogan/clonello/board-service/internal/grpcserver/proto"
+	"google.golang.org/grpc"
 	"log"
+	"net"
 )
 
 func main() {
+	database.ConnectMongoDB("mongodb://root:secret@mongo-board:27017")
 
-	uri := "mongodb://mongo-board:27017"
-	username := "root"
-	password := "secret"
-	dbName := "board_service_db"
-
-	db, err := database.ConnectMongoDB(uri, username, password, dbName)
+	listener, err := net.Listen("tcp", ":50051")
 	if err != nil {
-		log.Fatalf("Failed to connect to MongoDB: %v", err)
+		log.Fatalf("Error listening port: %v", err)
 	}
 
-	boardService := services.NewBoardService(db)
-	boardHandler := handlers.NewBoardHandler(boardService)
+	grpcServer := grpc.NewServer()
+	pb.RegisterBoardServiceServer(grpcServer, &grpcserver.BoardServer{})
 
-	router := gin.Default()
-	router.POST("/boards", boardHandler.CreateBoard)
-	router.GET("/boards", boardHandler.GetAllBoards)
-	router.GET("/boards/:board_id", boardHandler.GetBoard)
+	log.Println("✅ Board Service working on gRPC server 50051...")
 
-	go grpcserver.StartGRPCServer(boardService)
-
-	log.Println("Board Service running on port :8081")
-	if err := router.Run(":8081"); err != nil {
-		log.Fatalf("Failed to start Board Service: %v", err)
+	if err := grpcServer.Serve(listener); err != nil {
+		log.Fatalf("cannot start gRPC Server: %v", err)
 	}
 }

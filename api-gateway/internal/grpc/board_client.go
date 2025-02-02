@@ -12,7 +12,7 @@ type BoardClient struct {
 }
 
 func NewBoardClient() *BoardClient {
-	conn, err := grpc.Dial("board-service:50052", grpc.WithInsecure())
+	conn, err := grpc.Dial("board-service:50051", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("Could not connect to Board Service: %v", err)
 	}
@@ -28,6 +28,7 @@ func (b *BoardClient) CreateBoard(req *pb.CreateBoardRequest) (*pb.CreateBoardRe
 		log.Printf("Error calling CreateBoard: %v", err)
 		return nil, err
 	}
+	log.Printf("logged")
 	return resp, nil
 }
 

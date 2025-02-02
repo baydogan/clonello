@@ -2,28 +2,35 @@ package database
 
 import (
 	"context"
+	"fmt"
+	"log"
+	"time"
+
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"time"
 )
 
-func ConnectMongoDB(uri string, username, password string, dbName string) (*mongo.Database, error) {
-	clientOptions := options.Client().ApplyURI(uri).SetAuth(options.Credential{
-		Username: username,
-		Password: password,
-	})
+var DB *mongo.Client
+
+func ConnectMongoDB(uri string) *mongo.Client {
+	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
+	if err != nil {
+		log.Fatalf("MongoDB connection error: %v", err)
+	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	client, err := mongo.Connect(ctx, clientOptions)
+	err = client.Connect(ctx)
 	if err != nil {
-		return nil, err
+		log.Fatalf("Error during connection MongoDB: %v", err)
 	}
 
-	if err := client.Ping(ctx, nil); err != nil {
-		return nil, err
-	}
+	fmt.Println("MongoDB Connected")
+	DB = client
+	return client
+}
 
-	return client.Database(dbName), nil
+func GetCollection(collectionName string) *mongo.Collection {
+	return DB.Database("board_service_db").Collection(collectionName)
 }

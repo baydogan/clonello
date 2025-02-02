@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package board;
+
+option go_package = "github.com/baydogan/clonello/board-service/internal/grpcserver/pb";
+
+service BoardService {
+  rpc CreateBoard (CreateBoardRequest) returns (CreateBoardResponse);
+  rpc GetBoards (GetBoardsRequest) returns (GetBoardsResponse);
+}
+
+message CreateBoardRequest {
+  string user_id = 1;
+  string name = 2;
+}
+
+message CreateBoardResponse {
+  string board_id = 1;
+}
+
+message GetBoardsRequest {
+  string user_id = 1;
+}
+
+message GetBoardsResponse {
+  repeated Board boards = 1;
+}
+
+message Board {
+  string id = 1;
+  string name = 2;
+  string owner_id = 3;
+}
