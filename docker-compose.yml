@@ -94,6 +94,7 @@ services:
       DB_NAME: list_service_db
       MONGO_USER: root
       MONGO_PASSWORD: secret
+      SERVICE_PORT: 50052
       GRPC_BOARD_SERVICE: board-service:50051
     ports:
       - "50052:50052"

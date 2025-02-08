@@ -1,4 +1,4 @@
-FROM golang:1.23.3-alpine
+FROM golang:1.23.3-alpine AS builder
 
 WORKDIR /app
 
@@ -7,7 +7,13 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o list-service cmd/main.go
+RUN go build -o list-service ./cmd/main.go
+
+FROM alpine:latest
+
+WORKDIR /root/
+
+COPY --from=builder /app/list-service .
 
 EXPOSE 50052
 
