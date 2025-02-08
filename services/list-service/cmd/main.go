@@ -1,13 +1,14 @@
 package main
 
 import (
-	"github.com/baydogan/clonello/list-service/internal/proto/pb"
 	"log"
 	"net"
 
 	"github.com/baydogan/clonello/list-service/internal/database"
 	"github.com/baydogan/clonello/list-service/internal/grpcserver"
 	"google.golang.org/grpc"
+
+	pb "github.com/baydogan/clonello/proto/pb"
 )
 
 func main() {

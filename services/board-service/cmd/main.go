@@ -3,10 +3,11 @@ package main
 import (
 	"github.com/baydogan/clonello/board-service/internal/database"
 	"github.com/baydogan/clonello/board-service/internal/grpcserver"
-	"github.com/baydogan/clonello/board-service/internal/proto/pb"
 	"google.golang.org/grpc"
 	"log"
 	"net"
+
+	pb "github.com/baydogan/clonello/proto/pb"
 )
 
 func main() {

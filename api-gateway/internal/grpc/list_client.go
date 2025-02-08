@@ -2,13 +2,14 @@ package grpc
 
 import (
 	"context"
-	listpb "github.com/baydogan/clonello/api-gateway/internal/proto/listpb"
 	"google.golang.org/grpc"
 	"log"
+
+	pb "github.com/baydogan/clonello/proto/pb"
 )
 
 type ListClient struct {
-	client listpb.ListServiceClient
+	client pb.ListServiceClient
 }
 
 func NewListClient() *ListClient {
@@ -18,11 +19,11 @@ func NewListClient() *ListClient {
 	}
 
 	return &ListClient{
-		client: listpb.NewListServiceClient(conn),
+		client: pb.NewListServiceClient(conn),
 	}
 }
 
-func (l *ListClient) CreateList(req *listpb.CreateListRequest) (*listpb.CreateListResponse, error) {
+func (l *ListClient) CreateList(req *pb.CreateListRequest) (*pb.CreateListResponse, error) {
 	resp, err := l.client.CreateList(context.Background(), req)
 	if err != nil {
 		log.Printf("Error calling CreateList: %v", err)
@@ -32,7 +33,7 @@ func (l *ListClient) CreateList(req *listpb.CreateListRequest) (*listpb.CreateLi
 	return resp, nil
 }
 
-func (l *ListClient) GetLists(req *listpb.GetListsRequest) (*listpb.GetListsResponse, error) {
+func (l *ListClient) GetLists(req *pb.GetListsRequest) (*pb.GetListsResponse, error) {
 	resp, err := l.client.GetLists(context.Background(), req)
 	if err != nil {
 		log.Printf("Error calling GetLists: %v", err)

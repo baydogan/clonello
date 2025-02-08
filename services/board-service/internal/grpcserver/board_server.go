@@ -2,13 +2,14 @@ package grpcserver
 
 import (
 	"context"
-	"github.com/baydogan/clonello/board-service/internal/proto/pb"
 	"log"
 
 	"github.com/baydogan/clonello/board-service/internal/database"
 	"github.com/baydogan/clonello/board-service/internal/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+
+	pb "github.com/baydogan/clonello/proto/pb"
 )
 
 type BoardServer struct {

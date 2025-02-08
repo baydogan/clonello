@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package list;
 
-option go_package = "github.com/baydogan/clonello/list-service/internal/grpcserver/boardpb";
+option go_package = "./";
 
 service ListService {
   rpc CreateList (CreateListRequest) returns (CreateListResponse);

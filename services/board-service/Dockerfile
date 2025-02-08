@@ -2,10 +2,13 @@ FROM golang:1.23.3-alpine AS builder
 
 WORKDIR /app
 
-COPY go.mod go.sum ./
-RUN go mod download
+COPY services/board-service/go.mod services/board-service/go.sum ./
 
-COPY . .
+RUN go mod tidy && go mod download
+
+COPY proto /proto
+
+COPY services/board-service /app
 
 RUN go build -o board-service ./cmd/main.go
 

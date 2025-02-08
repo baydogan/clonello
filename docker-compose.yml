@@ -51,8 +51,10 @@ services:
 
   board-service:
     build:
-      context: ./services/board-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./services/board-service/Dockerfile
+    volumes:
+      - ./proto:/proto
     container_name: board-service
     environment:
       DB_HOST: mongo-board
@@ -85,8 +87,8 @@ services:
 
   list-service:
     build:
-      context: ./services/list-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./services/list-service/Dockerfile
     container_name: list-service
     environment:
       DB_HOST: mongo-list
@@ -106,8 +108,8 @@ services:
 
   api-gateway:
     build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./api-gateway/Dockerfile
     container_name: api-gateway
     environment:
       USER_SERVICE_URL: user-service:8080

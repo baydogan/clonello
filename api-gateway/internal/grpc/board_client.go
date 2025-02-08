@@ -2,13 +2,14 @@ package grpc
 
 import (
 	"context"
-	boardpb "github.com/baydogan/clonello/api-gateway/internal/proto/boardpb"
 	"google.golang.org/grpc"
 	"log"
+
+	pb "github.com/baydogan/clonello/proto/pb"
 )
 
 type BoardClient struct {
-	client boardpb.BoardServiceClient
+	client pb.BoardServiceClient
 }
 
 func NewBoardClient() *BoardClient {
@@ -18,11 +19,11 @@ func NewBoardClient() *BoardClient {
 	}
 
 	return &BoardClient{
-		client: boardpb.NewBoardServiceClient(conn),
+		client: pb.NewBoardServiceClient(conn),
 	}
 }
 
-func (b *BoardClient) CreateBoard(req *boardpb.CreateBoardRequest) (*boardpb.CreateBoardResponse, error) {
+func (b *BoardClient) CreateBoard(req *pb.CreateBoardRequest) (*pb.CreateBoardResponse, error) {
 	resp, err := b.client.CreateBoard(context.Background(), req)
 	if err != nil {
 		log.Printf("Error calling CreateBoard: %v", err)
@@ -32,7 +33,7 @@ func (b *BoardClient) CreateBoard(req *boardpb.CreateBoardRequest) (*boardpb.Cre
 	return resp, nil
 }
 
-func (b *BoardClient) GetBoards(req *boardpb.GetBoardsRequest) (*boardpb.GetBoardsResponse, error) {
+func (b *BoardClient) GetBoards(req *pb.GetBoardsRequest) (*pb.GetBoardsResponse, error) {
 	resp, err := b.client.GetBoards(context.Background(), req)
 	if err != nil {
 		log.Printf("Error calling GetBoards: %v", err)

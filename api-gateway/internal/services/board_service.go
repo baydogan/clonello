@@ -3,8 +3,9 @@ package services
 import (
 	"github.com/baydogan/clonello/api-gateway/internal/grpc"
 	"github.com/baydogan/clonello/api-gateway/internal/models"
-	pb "github.com/baydogan/clonello/api-gateway/internal/proto/boardpb"
 	"log"
+
+	pb "github.com/baydogan/clonello/proto/pb"
 )
 
 type BoardService struct {

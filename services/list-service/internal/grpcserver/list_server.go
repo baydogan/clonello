@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/baydogan/clonello/list-service/internal/database"
 	"github.com/baydogan/clonello/list-service/internal/models"
-	"github.com/baydogan/clonello/list-service/internal/proto/pb"
+	pb "github.com/baydogan/clonello/proto/pb"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"

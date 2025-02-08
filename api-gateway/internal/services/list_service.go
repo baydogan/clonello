@@ -3,8 +3,9 @@ package services
 import (
 	"github.com/baydogan/clonello/api-gateway/internal/grpc"
 	"github.com/baydogan/clonello/api-gateway/internal/models"
-	"github.com/baydogan/clonello/api-gateway/internal/proto/listpb"
 	"log"
+
+	pb "github.com/baydogan/clonello/proto/pb"
 )
 
 type ListService struct {
@@ -18,7 +19,7 @@ func NewListService() *ListService {
 }
 
 func (s *ListService) CreateList(req models.CreateListRequest) (*models.CreateListResponse, error) {
-	grpcReq := &listpb.CreateListRequest{
+	grpcReq := &pb.CreateListRequest{
 		BoardId: req.BoardID,
 		Title:   req.Title,
 	}
@@ -33,7 +34,7 @@ func (s *ListService) CreateList(req models.CreateListRequest) (*models.CreateLi
 }
 
 func (s *ListService) GetLists(boardID string) (*models.GetListsResponse, error) {
-	grpcReq := &listpb.GetListsRequest{
+	grpcReq := &pb.GetListsRequest{
 		BoardId: boardID,
 	}
 

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package board;
 
-option go_package = "clonello/api-gateway/proto";
+option go_package = "./";
 
 service BoardService {
   rpc CreateBoard(CreateBoardRequest) returns (CreateBoardResponse);
