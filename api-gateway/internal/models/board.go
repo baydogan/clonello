@@ -1,7 +1,7 @@
 package models
 
 type CreateBoardRequest struct {
-	UserID string `json:"owner_id"`
+	UserID string `json:"owner	_id"`
 	Name   string `json:"name"`
 }
 
