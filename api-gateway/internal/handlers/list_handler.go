@@ -1,13 +1,14 @@
 package handlers
 
 import (
+	"net/http"
+
 	"github.com/baydogan/clonello/api-gateway/internal/models"
 	"github.com/baydogan/clonello/api-gateway/internal/services"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
-var listService *services.ListService
+var listService = services.NewListService()
 
 func CreateList(c *gin.Context) {
 	var req models.CreateListRequest
@@ -16,13 +17,13 @@ func CreateList(c *gin.Context) {
 		return
 	}
 
-	resp, err := listService.CreateList(req.BoardID, req.Title)
+	resp, err := listService.CreateList(req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create list"})
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"list_id": resp.ListId})
+	c.JSON(http.StatusOK, resp)
 }
 
 func GetLists(c *gin.Context) {
@@ -38,14 +39,5 @@ func GetLists(c *gin.Context) {
 		return
 	}
 
-	var lists []models.List
-	for _, l := range resp.Lists {
-		lists = append(lists, models.List{
-			ID:      l.Id,
-			Title:   l.Title,
-			BoardID: l.BoardId,
-		})
-	}
-
-	c.JSON(http.StatusOK, models.GetListsResponse{Lists: lists})
+	c.JSON(http.StatusOK, resp)
 }

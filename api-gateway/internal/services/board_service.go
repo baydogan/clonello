@@ -3,7 +3,7 @@ package services
 import (
 	"github.com/baydogan/clonello/api-gateway/internal/grpc"
 	"github.com/baydogan/clonello/api-gateway/internal/models"
-	pb "github.com/baydogan/clonello/api-gateway/internal/proto/pb"
+	pb "github.com/baydogan/clonello/api-gateway/internal/proto/boardpb"
 	"log"
 )
 

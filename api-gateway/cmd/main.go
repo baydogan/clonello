@@ -15,6 +15,10 @@ func main() {
 	{
 		api.POST("/boards", handlers.CreateBoard)
 		api.GET("/boards", handlers.GetBoards)
+
+		api.POST("/lists", handlers.CreateList)
+		api.GET("/lists", handlers.GetLists)
+
 	}
 
 	log.Println("API Gateway running on port 8082")

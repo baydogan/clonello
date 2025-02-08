@@ -14,3 +14,7 @@ type List struct {
 type GetListsResponse struct {
 	Lists []List `json:"lists"`
 }
+
+type CreateListResponse struct {
+	ListID string `json:"list_id"`
+}

@@ -2,7 +2,7 @@ package grpc
 
 import (
 	"context"
-	"github.com/baydogan/clonello/api-gateway/internal/proto/listpb"
+	listpb "github.com/baydogan/clonello/api-gateway/internal/proto/listpb"
 	"google.golang.org/grpc"
 	"log"
 )
@@ -12,9 +12,9 @@ type ListClient struct {
 }
 
 func NewListClient() *ListClient {
-	conn, err := grpc.Dial("board-service:50051", grpc.WithInsecure())
+	conn, err := grpc.Dial("list-service:50052", grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("Could not connect to Board Service: %v", err)
+		log.Fatalf("Could not connect to List Service: %v", err)
 	}
 
 	return &ListClient{
@@ -28,7 +28,7 @@ func (l *ListClient) CreateList(req *listpb.CreateListRequest) (*listpb.CreateLi
 		log.Printf("Error calling CreateList: %v", err)
 		return nil, err
 	}
-	log.Printf("✅ List Created: %s", resp.ListId)
+	log.Printf("List Created: %s", resp.ListId)
 	return resp, nil
 }
 
@@ -38,6 +38,7 @@ func (l *ListClient) GetLists(req *listpb.GetListsRequest) (*listpb.GetListsResp
 		log.Printf("Error calling GetLists: %v", err)
 		return nil, err
 	}
-	log.Printf("✅ Lists Retrieved: %d lists found", len(resp.Lists))
+
+	log.Printf("Lists Retrieved: %d lists found", len(resp.Lists))
 	return resp, nil
 }

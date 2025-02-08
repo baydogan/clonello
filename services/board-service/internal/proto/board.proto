@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package board;
 
-option go_package = "github.com/baydogan/clonello/board-service/internal/grpcserver/pb";
+option go_package = "github.com/baydogan/clonello/board-service/internal/grpcserver/boardpb";
 
 service BoardService {
   rpc CreateBoard(CreateBoardRequest) returns (CreateBoardResponse);
