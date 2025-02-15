@@ -20,7 +20,7 @@ func NewBoardService() *BoardService {
 
 func (s *BoardService) CreateBoard(req models.CreateBoardRequest) (*models.CreateBoardResponse, error) {
 	grpcReq := &pb.CreateBoardRequest{
-		OwnerId: req.UserID,
+		OwnerId: req.OwnerID,
 		Title:   req.Name,
 	}
 
@@ -42,12 +42,24 @@ func (s *BoardService) GetBoards(userID string) (*models.GetBoardsResponse, erro
 
 	var boards []models.Board
 	for _, b := range resp.Boards {
+		var lists []models.List
+
+		for _, l := range b.Lists {
+			log.Printf("📄 Processing List -> ID: %s, Title: %s", l.Id, l.Title)
+			lists = append(lists, models.List{
+				ID:      l.Id,
+				Title:   l.Title,
+				BoardID: l.BoardId,
+			})
+		}
+
 		boards = append(boards, models.Board{
 			ID:      b.Id,
 			Name:    b.Title,
 			OwnerID: b.OwnerId,
+			Lists:   lists,
 		})
 	}
-
+	log.Printf("✅ Final API Response -> %d Boards", len(boards))
 	return &models.GetBoardsResponse{Boards: boards}, nil
 }

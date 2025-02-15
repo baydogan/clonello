@@ -16,14 +16,14 @@ func main() {
 
 	listener, err := net.Listen("tcp", ":50052")
 	if err != nil {
-		log.Fatalf("Port dinlenemedi: %v", err)
+		log.Fatalf("Error listening port: %v", err)
 	}
 
 	grpcServer := grpc.NewServer()
 	pb.RegisterListServiceServer(grpcServer, &grpcserver.ListServer{})
 
-	log.Println("List Service gRPC server 50052 portunda çalışıyor...")
+	log.Println("Board Service working on gRPC server 50052...")
 	if err := grpcServer.Serve(listener); err != nil {
-		log.Fatalf("gRPC Server başlatılamadı: %v", err)
+		log.Fatalf("cannot start gRPC server %v", err)
 	}
 }

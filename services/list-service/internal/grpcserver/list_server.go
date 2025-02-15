@@ -35,9 +35,11 @@ func (s *ListServer) CreateList(ctx context.Context, req *pb.CreateListRequest) 
 func (s *ListServer) GetLists(ctx context.Context, req *pb.GetListsRequest) (*pb.GetListsResponse, error) {
 	collection := database.GetCollection("lists")
 
+	log.Printf("Fetching lists for board: %s", req.BoardId)
+
 	cursor, err := collection.Find(ctx, bson.M{"board_id": req.BoardId})
 	if err != nil {
-		log.Printf("Listeler getirilirken hata: %v", err)
+		log.Printf("Error getting lists:	 %v", err)
 		return nil, err
 	}
 
@@ -45,15 +47,20 @@ func (s *ListServer) GetLists(ctx context.Context, req *pb.GetListsRequest) (*pb
 	for cursor.Next(ctx) {
 		var list models.List
 		if err := cursor.Decode(&list); err != nil {
-			log.Printf("List decode hatası: %v", err)
+			log.Printf("List decode error: %v", err)
 			continue
 		}
+
+		log.Printf("Found list: %s - %s", list.ID.Hex(), list.Title)
+
 		lists = append(lists, &pb.List{
 			Id:      list.ID.Hex(),
 			Title:   list.Title,
 			BoardId: list.BoardID,
 		})
 	}
+
+	log.Printf("Returning %d lists for board %s", len(lists), req.BoardId)
 
 	return &pb.GetListsResponse{Lists: lists}, nil
 }

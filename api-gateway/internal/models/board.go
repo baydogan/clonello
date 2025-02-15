@@ -1,8 +1,8 @@
 package models
 
 type CreateBoardRequest struct {
-	UserID string `json:"owner	_id"`
-	Name   string `json:"name"`
+	OwnerID string `json:"owner_id"`
+	Name    string `json:"name"`
 }
 
 type CreateBoardResponse struct {
@@ -17,4 +17,5 @@ type Board struct {
 	ID      string `json:"id"`
 	Name    string `json:"name"`
 	OwnerID string `json:"owner_id"`
+	Lists   []List `json:"lists"`
 }

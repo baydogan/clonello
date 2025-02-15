@@ -19,9 +19,9 @@ func main() {
 	}
 
 	grpcServer := grpc.NewServer()
-	pb.RegisterBoardServiceServer(grpcServer, &grpcserver.BoardServer{})
+	pb.RegisterBoardServiceServer(grpcServer, grpcserver.NewBoardServer("list-service:50052"))
 
-	log.Println("✅ Board Service working on gRPC server 50051...")
+	log.Println("Board Service working on gRPC server 50051...")
 
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatalf("cannot start gRPC Server: %v", err)

@@ -4,6 +4,8 @@ package board;
 
 option go_package = "./";
 
+import "list.proto";
+
 service BoardService {
   rpc CreateBoard(CreateBoardRequest) returns (CreateBoardResponse);
   rpc GetBoards(GetBoardsRequest) returns (GetBoardsResponse);
@@ -30,4 +32,5 @@ message Board {
   string id = 1;
   string title = 2;
   string owner_id = 3;
+  repeated list.List lists = 4;
 }
